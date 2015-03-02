@@ -7,14 +7,10 @@ __docformat__ = "restructuredtext en"
 # disable: accessing protected members, too many methods
 # pylint: disable=W0212,R0904
 
-import unittest
-
-import zope.component
-
-import zope.testing.cleanup
-
 from nti.testing.layers import ZopeComponentLayer
 from nti.testing.layers import ConfiguringLayerMixin
+
+import zope.testing.cleanup
 
 class SharedConfiguringTestLayer(ZopeComponentLayer,
                                  ConfiguringLayerMixin):
@@ -37,6 +33,8 @@ class SharedConfiguringTestLayer(ZopeComponentLayer,
     @classmethod
     def testTearDown(cls):
         pass
+
+import unittest
 
 class ContentIndexingLayerTest(unittest.TestCase):
     layer = SharedConfiguringTestLayer
