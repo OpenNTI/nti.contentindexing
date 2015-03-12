@@ -9,8 +9,9 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-quick = quick_ = QUICK = u'quick'
-content = content_ = CONTENT = u'content'
+from .. import title, title_, TITLE
+from .. import quick, quick_, QUICK
+from .. import content, content_, CONTENT
 
 book_prefix = BOOK_IDXNAME_PREFIX = u''
 nticard_prefix = NTICARD_IDXNAME_PREDIX = u'nticard_'
