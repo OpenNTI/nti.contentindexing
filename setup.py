@@ -43,23 +43,20 @@ setup(
 	tests_require=TESTS_REQUIRE,
 	install_requires=[
 		'setuptools',
-        'six',
-        'Whoosh',
+		'six',
+		'Whoosh',
 		'zope.component',
 		'zope.interface',
-        'zope.schema',
+		'zope.schema',
 		'zope.security',
 		'nti.common',
-        'nti.contentfragments',
-        'nti.contentprocessing',
+		'nti.contentfragments',
+		'nti.contentprocessing',
 		'nti.schema'
 	],
 	extras_require={
 		'test': TESTS_REQUIRE,
 	},
-	dependency_links=[
-		'git+https://github.com/NextThought/nti.schema.git#egg=nti.schema',
-		'git+https://github.com/NextThought/nti.nose_traceback_info.git#egg=nti.nose_traceback_info'
-	],
+	dependency_links=[],
 	entry_points=entry_points
 )
