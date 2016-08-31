@@ -13,7 +13,10 @@ logger = __import__('logging').getLogger(__name__)
 
 import re
 import six
-from cStringIO import StringIO
+try:
+	from cStringIO import StringIO
+except ImportError:
+	from StringIO import StringIO
 
 from .web_vtt_parser import WebVTTParser
 
