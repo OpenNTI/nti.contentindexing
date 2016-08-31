@@ -50,7 +50,7 @@ class Cue(object):
 
 # ----------------------------------
 
-class _WebVTTCueTimingsAndSettingsParser():
+class _WebVTTCueTimingsAndSettingsParser(object):
 
 	SPACE = r'[\u0020\t\f]'
 	NOSPACE = r'[^\u0020\t\f]'
@@ -151,7 +151,7 @@ class _WebVTTCueTimingsAndSettingsParser():
 		# hh:mm::ss.uuu
 		tstamp = '%02d:%02d:%02d.%03d' % (val1, val2, val3, val4)
 		result = val1 * 60 * 60 + val2 * 60 + val3 + val4 / 1000.0
-		return (result, tstamp)
+		return [result, tstamp]
 
 	def parse_settings(self, data, cue):
 		"""
@@ -361,15 +361,15 @@ class _WebVTTCueTextParser(object):
 					self.err("Incorrect end tag.")
 			elif token[0] == "timestamp":
 				timings = _WebVTTCueTimingsAndSettingsParser(token[1], self.err)
-				timestamp = timings.parseTimestamp()
+				timestamp = timings.parse_timestamp()
 				if timestamp != None:
 					if timestamp <= cue_start or timestamp >= cue_end:
 						self.err("Timestamp tag must be between start timestamp and end timestamp.")
 					if timestamps.length > 0 and timestamps[-1] >= timestamp:
 						self.err("Timestamp tag must be greater than any previous timestamp tag.")
 
-					current.children.push(_Result(type="timestamp", value=timestamp, parent=current))
-					timestamps.push(timestamp)
+					current.children.append(_Result(type="timestamp", value=timestamp, parent=current))
+					timestamps.append(timestamp)
 
 		while current.parent:
 			if current.name != "v":
@@ -466,7 +466,7 @@ class _WebVTTCueTextParser(object):
 				elif c == ">" or c == None:
 					if c == ">":
 						self.pos += 1
-					classes.push(buff)
+					classes.append(buff)
 					return ["start tag", result, classes, ""]
 				else:
 					buff += c
