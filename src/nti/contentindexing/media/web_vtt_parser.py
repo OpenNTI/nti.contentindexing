@@ -16,10 +16,7 @@ logger = __import__('logging').getLogger(__name__)
 import re
 import six
 import time
-try:
-	from cStringIO import StringIO
-except ImportError:
-	from StringIO import StringIO
+from io import StringIO
 
 class Cue(object):
 

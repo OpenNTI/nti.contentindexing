@@ -13,15 +13,12 @@ logger = __import__('logging').getLogger(__name__)
 
 import re
 import six
-try:
-	from cStringIO import StringIO
-except ImportError:
-	from StringIO import StringIO
+from io import StringIO
 
-from .web_vtt_parser import WebVTTParser
+from nti.contentindexing.media import MediaTranscript
+from nti.contentindexing.media import MediaTranscriptEntry
 
-from . import MediaTranscript
-from . import MediaTranscriptEntry
+from nti.contentindexing.media.web_vtt_parser import WebVTTParser
 
 class _BaseTranscriptParser(object):
 
