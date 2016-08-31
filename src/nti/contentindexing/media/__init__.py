@@ -11,15 +11,16 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from nti.schema.schema import SchemaConfigured
+from nti.contentindexing.media.interfaces import IAudioTranscript
+from nti.contentindexing.media.interfaces import IMediaTranscript
+from nti.contentindexing.media.interfaces import IVideoTranscript
+from nti.contentindexing.media.interfaces import IAudioTranscriptEntry
+from nti.contentindexing.media.interfaces import IMediaTranscriptEntry
+from nti.contentindexing.media.interfaces import IVideoTranscriptEntry
+
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from .interfaces import IAudioTranscript
-from .interfaces import IMediaTranscript
-from .interfaces import IVideoTranscript
-from .interfaces import IAudioTranscriptEntry
-from .interfaces import IMediaTranscriptEntry
-from .interfaces import IVideoTranscriptEntry
+from nti.schema.schema import SchemaConfigured
 
 @interface.implementer(IMediaTranscriptEntry)
 class MediaTranscriptEntry(SchemaConfigured):
