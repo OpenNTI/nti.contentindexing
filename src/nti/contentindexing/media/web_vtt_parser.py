@@ -427,7 +427,7 @@ class _WebVTTCueTextParser(object):
 					state = "start tag class"
 				elif c == "/":
 					state = "end tag"
-				elif re.match('\d', c):
+				elif c and re.match('\d', c):
 					result = c
 					state = "timestamp tag"
 				elif c == ">" or c == None:
