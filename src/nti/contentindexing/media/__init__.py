@@ -48,9 +48,12 @@ class VideoTranscriptEntry(MediaTranscriptEntry):
 class MediaTranscript(SchemaConfigured):
 	createDirectFieldProperties(IMediaTranscript)
 
+	def append(self, value):
+		return self.entries.append(value)
+
 	def __getitem__(self, index):
 		return self.entries[index]
-
+	
 	def __len__(self):
 		return len(self.entries)
 

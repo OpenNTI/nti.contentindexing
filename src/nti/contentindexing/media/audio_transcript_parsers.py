@@ -13,14 +13,14 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from .media_transcript_parsers import _SBVTranscriptParser
-from .media_transcript_parsers import _SRTTranscriptParser
-from .media_transcript_parsers import _WebVttTranscriptParser
+from nti.contentindexing.media import AudioTranscript
+from nti.contentindexing.media import AudioTranscriptEntry
 
-from .interfaces import IAudioTranscriptParser
+from nti.contentindexing.media.interfaces import IAudioTranscriptParser
 
-from . import AudioTranscript
-from . import AudioTranscriptEntry
+from nti.contentindexing.media.media_transcript_parsers import _SBVTranscriptParser
+from nti.contentindexing.media.media_transcript_parsers import _SRTTranscriptParser
+from nti.contentindexing.media.media_transcript_parsers import _WebVttTranscriptParser
 
 @interface.implementer(IAudioTranscriptParser)
 class _SRTTranscriptParser(_SRTTranscriptParser):

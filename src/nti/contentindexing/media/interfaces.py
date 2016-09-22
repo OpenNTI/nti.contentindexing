@@ -7,11 +7,11 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
-from zope import schema
 from zope import interface
 
 from zope.interface.common.sequence import IMinimalSequence
 
+from nti.schema.field import Object
 from nti.schema.field import ValidText
 from nti.schema.field import ListOrTuple
 from nti.schema.field import ValidTextLine
@@ -25,7 +25,7 @@ class IMediaTranscriptEntry(interface.Interface):
 	start_timestamp = ValidTextLine(title='Start time stamp')
 	id = ValidTextLine(title='Transcript entry id', required=False)
 	language = ValidTextLine(title='Transcript language', required=False,
-										default='en')
+							 default='en')
 
 class IAudioTranscriptEntry(IMediaTranscriptEntry):
 	pass
@@ -37,23 +37,22 @@ class IMediaTranscript(IMinimalSequence):
 	"""
 	Marker interface for media transcript
 	"""
-	entries = ListOrTuple(schema.Object(IMediaTranscriptEntry, title='the entry'),
-						  			 title='Ordered transcript entries')
+	entries = ListOrTuple(Object(IMediaTranscriptEntry, title='the entry'),
+						  		 title='Ordered transcript entries')
 
 class IAudioTranscript(IMediaTranscript):
 	"""
 	Marker interface for audio transcript
 	"""
-	entries = ListOrTuple(schema.Object(IAudioTranscriptEntry, title='the entry'),
-						  			 title='Ordered transcript entries')
+	entries = ListOrTuple(Object(IAudioTranscriptEntry, title='the entry'),
+						  		 title='Ordered transcript entries')
 
 class IVideoTranscript(IMediaTranscript):
 	"""
 	Marker interface for video transcript
 	"""
-	entries = ListOrTuple(schema.Object(IVideoTranscriptEntry, title='the entry'),
-						  			 title='Ordered transcript entries')
-
+	entries = ListOrTuple(Object(IVideoTranscriptEntry, title='the entry'),
+						  		 title='Ordered transcript entries')
 
 class IMediaTranscriptParser(interface.Interface):
 	"""

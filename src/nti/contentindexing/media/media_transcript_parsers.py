@@ -24,6 +24,7 @@ class _BaseTranscriptParser(object):
 
 	timestamp_exp = r'[0-9]?[0-9]:[0-9]{2}:[0-9]{2}[,|\.][0-9]{3}'
 	trx_times_exp = r'(%s)(,|\s+-->\s+)(%s)' % (timestamp_exp, timestamp_exp)
+
 	trx_times_pattern = re.compile(trx_times_exp, re.U)
 
 	@classmethod

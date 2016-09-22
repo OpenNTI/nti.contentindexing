@@ -13,14 +13,14 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from .media_transcript_parsers import _SRTTranscriptParser
-from .media_transcript_parsers import _SBVTranscriptParser
-from .media_transcript_parsers import _WebVttTranscriptParser
+from nti.contentindexing.media import VideoTranscript
+from nti.contentindexing.media import VideoTranscriptEntry
 
-from .interfaces import IVideoTranscriptParser
+from nti.contentindexing.media.interfaces import IVideoTranscriptParser
 
-from . import VideoTranscript
-from . import VideoTranscriptEntry
+from nti.contentindexing.media.media_transcript_parsers import _SRTTranscriptParser
+from nti.contentindexing.media.media_transcript_parsers import _SBVTranscriptParser
+from nti.contentindexing.media.media_transcript_parsers import _WebVttTranscriptParser
 
 @interface.implementer(IVideoTranscriptParser)
 class _SRTTranscriptParser(_SRTTranscriptParser):

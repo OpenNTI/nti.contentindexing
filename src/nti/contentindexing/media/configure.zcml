@@ -8,12 +8,12 @@
 	<include package="zope.component" />
 	<include package="zope.security" />
 	
-	<utility factory=".audio_transcript_parsers._SRTTranscriptParser" name="srt" />
 	<utility factory=".audio_transcript_parsers._SBVTranscriptParser" name="sbv" />
+	<utility factory=".audio_transcript_parsers._SRTTranscriptParser" name="srt" />
 	<utility factory=".audio_transcript_parsers._WebVttTranscriptParser" name="vtt" />
 		
-	<utility factory=".video_transcript_parsers._SRTTranscriptParser" name="srt" />
 	<utility factory=".video_transcript_parsers._SBVTranscriptParser" name="sbv" />
+	<utility factory=".video_transcript_parsers._SRTTranscriptParser" name="srt" />
 	<utility factory=".video_transcript_parsers._WebVttTranscriptParser" name="vtt" />
 		
 </configure>
