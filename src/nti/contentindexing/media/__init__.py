@@ -49,7 +49,7 @@ class MediaTranscript(SchemaConfigured):
 	createDirectFieldProperties(IMediaTranscript)
 
 	@property
-	def transcript(self):
+	def text(self):
 		return '\n'.join(self)
 
 	def append(self, value):

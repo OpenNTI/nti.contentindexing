@@ -42,8 +42,8 @@ class IMediaTranscript(IMinimalSequence):
 	entries = ListOrTuple(Object(IMediaTranscriptEntry, title='the entry'),
 						  		 title='Ordered transcript entries')
 	
-	transcript = interface.Attribute('All entries transcript text')
-	transcript.setTaggedValue('_ext_excluded_out', True)
+	text = interface.Attribute('All entries transcript text')
+	text.setTaggedValue('_ext_excluded_out', True)
 
 class IAudioTranscript(IMediaTranscript):
 	"""
