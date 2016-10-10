@@ -7,6 +7,8 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
+logger = __import__('logging').getLogger(__name__)
+
 from zope import interface
 
 from zope.interface.common.sequence import IMinimalSequence
@@ -39,6 +41,9 @@ class IMediaTranscript(IMinimalSequence):
 	"""
 	entries = ListOrTuple(Object(IMediaTranscriptEntry, title='the entry'),
 						  		 title='Ordered transcript entries')
+	
+	transcript = interface.Attribute('All entries transcript text')
+	transcript.setTaggedValue('_ext_excluded_out', True)
 
 class IAudioTranscript(IMediaTranscript):
 	"""

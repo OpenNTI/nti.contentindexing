@@ -629,6 +629,6 @@ class WebVTTParser(object):
 			return 0
 		cues = sorted(cues, cmp=cue_sort)
 
-		result = {'cues':cues, 'errors':errors, 'time':time.time() - start_time }
+		result = {'cues':cues, 'errors':errors, 'time':time.time() - start_time}
 		result.update(meta)
 		return result

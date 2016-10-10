@@ -15,12 +15,14 @@ import re
 import six
 from io import StringIO
 
+from nti.common.string import to_unicode
+
 from nti.contentindexing.media import MediaTranscript
 from nti.contentindexing.media import MediaTranscriptEntry
 
 from nti.contentindexing.media.web_vtt_parser import WebVTTParser
 
-class _BaseTranscriptParser(object):
+class BaseTranscriptParser(object):
 
 	timestamp_exp = r'[0-9]?[0-9]:[0-9]{2}:[0-9]{2}[,|\.][0-9]{3}'
 	trx_times_exp = r'(%s)(,|\s+-->\s+)(%s)' % (timestamp_exp, timestamp_exp)
@@ -45,8 +47,9 @@ class _BaseTranscriptParser(object):
 		if isinstance(source, six.string_types):
 			source = StringIO(source)
 		return source
+_BaseTranscriptParser = BaseTranscriptParser
 
-class _YoutubeTranscriptParser(_BaseTranscriptParser):
+class YoutubeTranscriptParser(BaseTranscriptParser):
 
 	entry_cls = MediaTranscriptEntry
 
@@ -68,8 +71,9 @@ class _YoutubeTranscriptParser(_BaseTranscriptParser):
 						  start_timestamp=trange[0],
 						  end_timestamp=trange[1])
 		return e
+_YoutubeTranscriptParser = YoutubeTranscriptParser
 
-class _SRTTranscriptParser(_YoutubeTranscriptParser):
+class SRTTranscriptParser(YoutubeTranscriptParser):
 
 	transcript_cls = MediaTranscript
 
@@ -88,7 +92,7 @@ class _SRTTranscriptParser(_YoutubeTranscriptParser):
 				if not line:
 					break
 			else:
-				line = unicode(line.rstrip())
+				line = to_unicode(line.rstrip())
 				if not trange and line.isdigit() :
 					eid = line
 				elif not trange and cls.is_valid_timestamp_range(line):
@@ -96,10 +100,10 @@ class _SRTTranscriptParser(_YoutubeTranscriptParser):
 				else:
 					text = [] if text is None else text
 					text.append(line)
-		result = cls.transcript_cls(entries=entries)
-		return result
+		return cls.transcript_cls(entries=entries)
+_SRTTranscriptParser = SRTTranscriptParser
 
-class _SBVTranscriptParser(_YoutubeTranscriptParser):
+class SBVTranscriptParser(YoutubeTranscriptParser):
 
 	transcript_cls = MediaTranscript
 
@@ -112,23 +116,23 @@ class _SBVTranscriptParser(_YoutubeTranscriptParser):
 			line = source.readline()
 			if not line or not line.strip():
 				if range and text:
-					eid = unicode(len(entries) + 1)
+					eid = to_unicode(len(entries) + 1)
 					e = cls.create_transcript_entry(text, trange, eid)
 					entries.append(e)
 				trange = text = None
 				if not line:
 					break
 			else:
-				line = unicode(line.rstrip())
+				line = to_unicode(line.rstrip())
 				if not trange and cls.is_valid_timestamp_range(line):
 					trange = cls.get_timestamp_range(line)
 				else:
 					text = [] if text is None else text
 					text.append(line)
-		result = cls.transcript_cls(entries=entries)
-		return result
+		return cls.transcript_cls(entries=entries)
+_SBVTranscriptParser = SBVTranscriptParser
 
-class _WebVttTranscriptParser(_BaseTranscriptParser):
+class WebVttTranscriptParser(BaseTranscriptParser):
 
 	entry_cls = MediaTranscriptEntry
 	transcript_cls = MediaTranscript
@@ -143,10 +147,10 @@ class _WebVttTranscriptParser(_BaseTranscriptParser):
 		for eid, cue in enumerate(cues):
 			if cue.has_errors or not cue.end_timestamp or not cue.start_timestamp:
 				continue
-			e = cls.entry_cls(id=unicode(eid + 1),
-							  transcript=unicode(cue.text),
+			e = cls.entry_cls(id=to_unicode(str(eid + 1)),
+							  transcript=to_unicode(cue.text),
 							  start_timestamp=cue.start_timestamp,
 							  end_timestamp=cue.end_timestamp)
 			entries.append(e)
-		result = cls.transcript_cls(entries=entries)
-		return result
+		return cls.transcript_cls(entries=entries)
+_WebVttTranscriptParser = WebVttTranscriptParser

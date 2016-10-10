@@ -48,6 +48,10 @@ class VideoTranscriptEntry(MediaTranscriptEntry):
 class MediaTranscript(SchemaConfigured):
 	createDirectFieldProperties(IMediaTranscript)
 
+	@property
+	def transcript(self):
+		return '\n'.join(self)
+
 	def append(self, value):
 		return self.entries.append(value)
 
