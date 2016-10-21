@@ -30,7 +30,7 @@ class MediaTranscriptEntry(SchemaConfigured):
 		return "%s,%s,%s" % (self.id, self.start_timestamp, self.end_timestamp)
 
 	def __repr__(self):
-		return "%s(%s,%s,%s\n%s)" % (self.__class__.__name__,
+		return "%s(%s,%s,%s\n%r)" % (self.__class__.__name__,
 									 self.id,
 									 self.start_timestamp,
 									 self.end_timestamp,
@@ -50,7 +50,7 @@ class MediaTranscript(SchemaConfigured):
 
 	@property
 	def text(self):
-		return '\n'.join(self)
+		return '\n'.join(x.transcript for x in self.entries)
 
 	def append(self, value):
 		return self.entries.append(value)
