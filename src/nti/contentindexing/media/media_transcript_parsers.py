@@ -143,7 +143,7 @@ class WebVttTranscriptParser(BaseTranscriptParser):
 		source = cls.fix_source(source)
 		parser = WebVTTParser()
 		parsed = parser.parse(source)
-		cues = parsed.get('cues', [])
+		cues = parsed.get('cues') or ()
 		for eid, cue in enumerate(cues):
 			if cue.has_errors or not cue.end_timestamp or not cue.start_timestamp:
 				continue
