@@ -65,7 +65,7 @@ class MediaTranscript(SchemaConfigured):
 		return "%s" % len(self)
 
 	def __repr__(self):
-		return "%s(%s)" % (self.__class__.__name__, self.entries)
+		return "%s(%r)" % (self.__class__.__name__, self.entries)
 
 	def __iter__(self):
 		return iter(self.entries)
