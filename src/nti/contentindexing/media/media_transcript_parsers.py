@@ -15,7 +15,7 @@ import re
 import six
 from io import StringIO
 
-from nti.common.string import to_unicode
+from nti.contentindexing._compat  import to_unicode
 
 from nti.contentindexing.media import MediaTranscript
 from nti.contentindexing.media import MediaTranscriptEntry

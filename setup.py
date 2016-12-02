@@ -49,7 +49,6 @@ setup(
 		'zope.interface',
 		'zope.schema',
 		'zope.security',
-		'nti.common',
 		'nti.contentfragments',
 		'nti.contentprocessing',
 		'nti.schema'
