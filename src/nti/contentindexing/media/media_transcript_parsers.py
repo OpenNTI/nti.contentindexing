@@ -15,7 +15,7 @@ import re
 import six
 from io import StringIO
 
-from nti.contentindexing._compat  import to_unicode
+from nti.contentindexing._compat import to_unicode
 
 from nti.contentindexing.media import MediaTranscript
 from nti.contentindexing.media import MediaTranscriptEntry
@@ -45,7 +45,7 @@ class BaseTranscriptParser(object):
 	@classmethod
 	def fix_source(cls, source):
 		if isinstance(source, six.string_types):
-			source = StringIO(source)
+			source = StringIO(to_unicode(source))
 		return source
 _BaseTranscriptParser = BaseTranscriptParser
 
