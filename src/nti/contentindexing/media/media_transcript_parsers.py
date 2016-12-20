@@ -117,7 +117,7 @@ class SBVTranscriptParser(YoutubeTranscriptParser):
 			line = source.readline()
 			if not line or not line.strip():
 				if range and text:
-					eid = to_unicode(len(entries) + 1)
+					eid = to_unicode(str(len(entries) + 1))
 					e = cls.create_transcript_entry(text, trange, eid)
 					entries.append(e)
 				trange = text = None
