@@ -66,6 +66,7 @@ class YoutubeTranscriptParser(BaseTranscriptParser):
 	@classmethod
 	def create_transcript_entry(cls, text, trange, eid=None):
 		transcript = '\n'.join(text)
+		eid = to_unicode(eid) if eid else None
 		e = cls.entry_cls(id=eid,
 						  transcript=transcript,
 						  start_timestamp=trange[0],
