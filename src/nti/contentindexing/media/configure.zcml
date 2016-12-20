@@ -22,7 +22,7 @@
 	<utility factory=".video_transcript_parsers._SRTTranscriptParser" name="srt" />
 	<utility factory=".video_transcript_parsers._WebVttTranscriptParser" name="vtt" />
 	
-	utility factory=".video_transcript_parsers._SBVTranscriptParser" name="text/sbv" />
+	<utility factory=".video_transcript_parsers._SBVTranscriptParser" name="text/sbv" />
 	<utility factory=".video_transcript_parsers._SRTTranscriptParser" name="text/srt" />
 	<utility factory=".video_transcript_parsers._WebVttTranscriptParser" name="text/vtt" />
 		

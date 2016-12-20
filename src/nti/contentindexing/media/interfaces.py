@@ -22,10 +22,10 @@ class IMediaTranscriptEntry(interface.Interface):
 	"""
 	Marker interface for video transcript entry
 	"""
+	id = ValidTextLine(title='Transcript entry id', required=False)
 	transcript = ValidText(title='Transcript text')
 	end_timestamp = ValidTextLine(title='End time stamp')
 	start_timestamp = ValidTextLine(title='Start time stamp')
-	id = ValidTextLine(title='Transcript entry id', required=False)
 	language = ValidTextLine(title='Transcript language', required=False,
 							 default='en')
 

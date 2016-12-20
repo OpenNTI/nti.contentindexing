@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-audio transcript parsers.
-
 .. $Id: video_transcript_parsers.py 38907 2014-05-13 16:48:46Z carlos.sanchez $
 """
 
