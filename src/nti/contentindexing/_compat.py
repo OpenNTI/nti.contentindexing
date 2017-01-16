@@ -27,10 +27,11 @@ else:
     integer_types = (int, long)
     class_types = (type, types.ClassType)
 
-if PY3: # pragma: no cover
+if PY3:  # pragma: no cover
     _unicode = unicode
 else:
     _unicode = lambda s: s
+
 
 def to_unicode(s, encoding='utf-8', err='strict'):
     """

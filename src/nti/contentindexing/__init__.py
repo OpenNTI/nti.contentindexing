@@ -8,7 +8,3 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
-
-title = title_ = TITLE = u'title'
-quick = quick_ = QUICK = u'quick'
-content = content_ = CONTENT = u'content'

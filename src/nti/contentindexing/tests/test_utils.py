@@ -19,6 +19,7 @@ from nti.contentindexing.utils import date_to_videotimestamp
 
 from nti.contentindexing.tests import SharedConfiguringTestLayer
 
+
 class TestUtils(unittest.TestCase):
 
     layer = SharedConfiguringTestLayer
