@@ -31,7 +31,6 @@ def sanitize_content(text, table=None, tokens=False, lang='en'):
     """
     if not text:
         return text
-
     # turn incoming into plain text.
     # NOTE: If the HTML included entities like like &lt,
     # this may still have things in it that sort of look like
@@ -45,7 +44,6 @@ def sanitize_content(text, table=None, tokens=False, lang='en'):
     raw = text
     text = component.getAdapter(text, IPlainTextContentFragment, name='text')
     __traceback_info__ = raw, text, type(text)
-
     # translate and tokenize words
     text = text.translate(table) if table else text
     tokenized_words = tokenize_content(text, lang)
@@ -90,7 +88,8 @@ def videotimestamp_to_datetime(qstring):
         microsecond = int(qstring[9:13])
 
     result = datetime(year=year, month=month, day=day, hour=hour,
-                      minute=minute, second=second, microsecond=microsecond)
+                      minute=minute, second=second,
+                      microsecond=microsecond)
     return result
 mediatimestamp_to_datetime = videotimestamp_to_datetime
 
