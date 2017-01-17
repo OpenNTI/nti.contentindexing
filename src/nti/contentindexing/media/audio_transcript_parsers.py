@@ -20,17 +20,20 @@ from nti.contentindexing.media.media_transcript_parsers import SBVTranscriptPars
 from nti.contentindexing.media.media_transcript_parsers import SRTTranscriptParser
 from nti.contentindexing.media.media_transcript_parsers import WebVttTranscriptParser
 
+
 @interface.implementer(IAudioTranscriptParser)
 class _SRTTranscriptParser(SRTTranscriptParser):
-	entry_cls = AudioTranscriptEntry
-	transcript_cls = AudioTranscript
+    entry_cls = AudioTranscriptEntry
+    transcript_cls = AudioTranscript
+
 
 @interface.implementer(IAudioTranscriptParser)
 class _SBVTranscriptParser(SBVTranscriptParser):
-	entry_cls = AudioTranscriptEntry
-	transcript_cls = AudioTranscript
+    entry_cls = AudioTranscriptEntry
+    transcript_cls = AudioTranscript
+
 
 @interface.implementer(IAudioTranscriptParser)
 class _WebVttTranscriptParser(WebVttTranscriptParser):
-	entry_cls = AudioTranscriptEntry
-	transcript_cls = AudioTranscript
+    entry_cls = AudioTranscriptEntry
+    transcript_cls = AudioTranscript
