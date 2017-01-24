@@ -14,9 +14,10 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 import re
-import six
 import time
-from io import StringIO
+
+from six import StringIO
+from six import string_types
 
 # ----------------------------------
 
@@ -534,7 +535,7 @@ class WebVTTParser(object):
                            'col': col})
 
         already_collected = False
-        if isinstance(source, six.string_types):
+        if isinstance(source, string_types):
             source = StringIO(source)
 
         lines = []
