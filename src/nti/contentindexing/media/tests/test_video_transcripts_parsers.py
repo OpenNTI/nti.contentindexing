@@ -27,7 +27,7 @@ class TestVideoTranscriptParser(ContentIndexingLayerTest):
 
     def test_srt_parser(self):
         path = os.path.join(os.path.dirname( __file__), 
-						   'transcripts/automatic_captions_systemic_risk_drivers.srt')
+                           'transcripts/automatic_captions_systemic_risk_drivers.srt')
         parser = component.getUtility(IVideoTranscriptParser, name="srt")
         with open(path, "r") as source:
             transcript = parser.parse(source)
@@ -41,7 +41,7 @@ class TestVideoTranscriptParser(ContentIndexingLayerTest):
 
     def test_sbv_parser(self):
         path = os.path.join(os.path.dirname(__file__), 
-						   'transcripts/nextthought_captions_002_000.sbv')
+                           'transcripts/nextthought_captions_002_000.sbv')
         parser = component.getUtility(IVideoTranscriptParser, name="sbv")
         with open(path, "r") as source:
             transcript = parser.parse(source)
@@ -53,7 +53,7 @@ class TestVideoTranscriptParser(ContentIndexingLayerTest):
 
     def test_webvtt_parser_sample_web(self):
         path = os.path.join(os.path.dirname(__file__),
-						    'transcripts/sample_web.vtt')
+                            'transcripts/sample_web.vtt')
         parser = component.getUtility(IVideoTranscriptParser, name="vtt")
         with open(path, "r") as source:
             transcript = parser.parse(source)
@@ -66,7 +66,7 @@ class TestVideoTranscriptParser(ContentIndexingLayerTest):
 
     def test_webvtt_parser_abcdef(self):
         path = os.path.join(os.path.dirname(__file__),
-						    'transcripts/abcdef.vtt')
+                            'transcripts/abcdef.vtt')
         parser = component.getUtility(IVideoTranscriptParser, name="vtt")
         with open(path, "r") as source:
             transcript = parser.parse(source)
@@ -85,7 +85,7 @@ class TestVideoTranscriptParser(ContentIndexingLayerTest):
 
     def test_webvtt_parser_okstate(self):
         path = os.path.join(os.path.dirname(__file__),
-						   'transcripts/dairy_products_and_consumers.vtt')
+                           'transcripts/dairy_products_and_consumers.vtt')
         parser = component.getUtility(IVideoTranscriptParser, name="vtt")
         with codecs.open(path, "r", "UTF-8") as source:
             transcript = parser.parse(source)

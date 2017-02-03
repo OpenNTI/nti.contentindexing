@@ -35,7 +35,7 @@ def sanitize_content(text, table=None, tokens=False, lang='en'):
     # NOTE: If the HTML included entities like like &lt,
     # this may still have things in it that sort of look like
     # tags:
-    #	&lt;link text&gt; => <link text>
+    #   &lt;link text&gt; => <link text>
     # But of course we CANNOT and MUST NOT attempt to run an additional
     # parsing pass on it, as that's likely to wind up with gibberish results
     # since its nothing actually close to HTML
@@ -64,9 +64,9 @@ def date_to_videotimestamp(dt):
     if isinstance(dt, datetime):
         milli = math.floor(dt.microsecond / 1000.0)
         result = u"%02d:%02d:%02d.%03d" % (dt.hour,
-										   dt.minute, 
-										   dt.second, 
-										   milli)
+                                           dt.minute, 
+                                           dt.second, 
+                                           milli)
         return result
     return u''
 
