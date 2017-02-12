@@ -14,12 +14,12 @@ import re
 from six import StringIO
 from six import string_types
 
-from nti.contentindexing._compat import to_unicode
-
 from nti.contentindexing.media import MediaTranscript
 from nti.contentindexing.media import MediaTranscriptEntry
 
 from nti.contentindexing.media.web_vtt_parser import WebVTTParser
+
+from nti.contentprocessing._compat import to_unicode
 
 
 class BaseTranscriptParser(object):
