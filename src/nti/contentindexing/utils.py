@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -64,8 +64,8 @@ def date_to_videotimestamp(dt):
     if isinstance(dt, datetime):
         milli = math.floor(dt.microsecond / 1000.0)
         result = u"%02d:%02d:%02d.%03d" % (dt.hour,
-                                           dt.minute, 
-                                           dt.second, 
+                                           dt.minute,
+                                           dt.second,
                                            milli)
         return result
     return u''
@@ -91,6 +91,8 @@ def videotimestamp_to_datetime(qstring):
                       minute=minute, second=second,
                       microsecond=microsecond)
     return result
+
+
 mediatimestamp_to_datetime = videotimestamp_to_datetime
 
 
