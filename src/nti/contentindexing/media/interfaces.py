@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -23,12 +23,12 @@ class IMediaTranscriptEntry(interface.Interface):
     """
     Marker interface for video transcript entry
     """
-    id = ValidTextLine(title='Transcript entry id', required=False)
-    transcript = ValidText(title='Transcript text')
-    end_timestamp = ValidTextLine(title='End time stamp')
-    start_timestamp = ValidTextLine(title='Start time stamp')
-    language = ValidTextLine(title='Transcript language', required=False,
-                             default='en')
+    id = ValidTextLine(title=u'Transcript entry id', required=False)
+    transcript = ValidText(title=u'Transcript text')
+    end_timestamp = ValidTextLine(title=u'End time stamp')
+    start_timestamp = ValidTextLine(title=u'Start time stamp')
+    language = ValidTextLine(title=u'Transcript language', required=False,
+                             default=u'en')
 
 
 class IAudioTranscriptEntry(IMediaTranscriptEntry):
@@ -43,8 +43,8 @@ class IMediaTranscript(IMinimalSequence):
     """
     Marker interface for media transcript
     """
-    entries = ListOrTuple(Object(IMediaTranscriptEntry, title='the entry'),
-                          title='Ordered transcript entries')
+    entries = ListOrTuple(Object(IMediaTranscriptEntry, title=u'the entry'),
+                          title=u'Ordered transcript entries')
 
     text = interface.Attribute('All entries transcript text')
     text.setTaggedValue('_ext_excluded_out', True)
@@ -54,16 +54,16 @@ class IAudioTranscript(IMediaTranscript):
     """
     Marker interface for audio transcript
     """
-    entries = ListOrTuple(Object(IAudioTranscriptEntry, title='the entry'),
-                          title='Ordered transcript entries')
+    entries = ListOrTuple(Object(IAudioTranscriptEntry, title=u'the entry'),
+                          title=u'Ordered transcript entries')
 
 
 class IVideoTranscript(IMediaTranscript):
     """
     Marker interface for video transcript
     """
-    entries = ListOrTuple(Object(IVideoTranscriptEntry, title='the entry'),
-                          title='Ordered transcript entries')
+    entries = ListOrTuple(Object(IVideoTranscriptEntry, title=u'the entry'),
+                          title=u'Ordered transcript entries')
 
 
 class IMediaTranscriptParser(interface.Interface):

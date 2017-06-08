@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -26,8 +26,8 @@ from nti.contentindexing.tests import ContentIndexingLayerTest
 class TestVideoTranscriptParser(ContentIndexingLayerTest):
 
     def test_srt_parser(self):
-        path = os.path.join(os.path.dirname( __file__), 
-                           'transcripts/automatic_captions_systemic_risk_drivers.srt')
+        path = os.path.join(os.path.dirname(__file__),
+                            'transcripts/automatic_captions_systemic_risk_drivers.srt')
         parser = component.getUtility(IVideoTranscriptParser, name="srt")
         with open(path, "r") as source:
             transcript = parser.parse(source)
@@ -40,8 +40,8 @@ class TestVideoTranscriptParser(ContentIndexingLayerTest):
             assert_that(e.transcript, is_not(none()))
 
     def test_sbv_parser(self):
-        path = os.path.join(os.path.dirname(__file__), 
-                           'transcripts/nextthought_captions_002_000.sbv')
+        path = os.path.join(os.path.dirname(__file__),
+                            'transcripts/nextthought_captions_002_000.sbv')
         parser = component.getUtility(IVideoTranscriptParser, name="sbv")
         with open(path, "r") as source:
             transcript = parser.parse(source)
@@ -85,7 +85,7 @@ class TestVideoTranscriptParser(ContentIndexingLayerTest):
 
     def test_webvtt_parser_okstate(self):
         path = os.path.join(os.path.dirname(__file__),
-                           'transcripts/dairy_products_and_consumers.vtt')
+                            'transcripts/dairy_products_and_consumers.vtt')
         parser = component.getUtility(IVideoTranscriptParser, name="vtt")
         with codecs.open(path, "r", "UTF-8") as source:
             transcript = parser.parse(source)

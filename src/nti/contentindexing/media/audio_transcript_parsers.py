@@ -4,7 +4,7 @@
 .. $Id: video_transcript_parsers.py 38907 2014-05-13 16:48:46Z carlos.sanchez $
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
