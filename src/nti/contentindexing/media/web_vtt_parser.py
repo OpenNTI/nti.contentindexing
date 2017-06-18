@@ -166,7 +166,7 @@ class _WebVTTCueTimingsAndSettingsParser(object):
         """
         seen = set()
         settings = re.split(self.SPACE, data)
-        for i in xrange(len(settings)):
+        for i in range(len(settings)):
             if settings[i] == "":
                 continue
             index = settings[i].find(':')
