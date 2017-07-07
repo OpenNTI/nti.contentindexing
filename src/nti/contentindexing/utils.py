@@ -18,7 +18,7 @@ from zope import component
 
 from nti.contentfragments.interfaces import IPlainTextContentFragment
 
-from nti.contentprocessing import tokenize_content
+from nti.contentprocessing.content_utils import tokenize_content
 
 
 def sanitize_content(text, table=None, tokens=False, lang='en'):
