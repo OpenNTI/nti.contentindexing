@@ -14,6 +14,7 @@ from __future__ import absolute_import
 
 import re
 import time
+import functools
 
 from six import string_types
 
@@ -25,6 +26,7 @@ logger = __import__('logging').getLogger(__name__)
 # ----------------------------------
 
 
+@functools.total_ordering
 class Cue(object):
 
     has_errors = False
@@ -56,6 +58,18 @@ class Cue(object):
                                  self.start_timestamp,
                                  self.end_timestamp,
                                  self.text)
+
+    def __lt__(self, other):
+        try:
+            return (self.start_time, self.end_time) < (other.start_time, other.end_time)
+        except AttributeError:  # pragma: no cover
+            return NotImplemented
+
+    def __gt__(self, other):
+        try:
+            return (self.start_time, self.end_time) > (other.start_time, other.end_time)
+        except AttributeError:  # pragma: no cover
+            return NotImplemented
 
 
 # ----------------------------------
@@ -528,7 +542,6 @@ class _WebVTTCueTextParser(object):
 class WebVTTParser(object):
 
     def parse(self, source):
-
         cues = []
         errors = []
         linepos = 0
@@ -642,17 +655,7 @@ class WebVTTParser(object):
             cue.has_errors = len(errors) > cnt
 
         # SORT Cues
-        def cue_sort(a, b):
-            if a.start_time < b.start_time:
-                return -1
-            if a.start_time > b.start_time:
-                return 1
-            if a.end_time > b.end_time:
-                return -1
-            if a.end_time < b.end_time:
-                return 1
-            return 0
-        cues = sorted(cues, cmp=cue_sort)
+        cues.sort()
 
         result = {'cues': cues, 'errors': errors,
                   'time': time.time() - start_time}
