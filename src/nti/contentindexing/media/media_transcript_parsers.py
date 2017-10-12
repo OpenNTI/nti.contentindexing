@@ -4,15 +4,15 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 import re
 
-from six import StringIO
 from six import string_types
+
+from six.moves import cStringIO
 
 from nti.contentindexing.media import MediaTranscript
 from nti.contentindexing.media import MediaTranscriptEntry
@@ -20,6 +20,8 @@ from nti.contentindexing.media import MediaTranscriptEntry
 from nti.contentindexing.media.web_vtt_parser import WebVTTParser
 
 from nti.contentprocessing._compat import text_
+
+logger = __import__('logging').getLogger(__name__)
 
 
 class BaseTranscriptParser(object):
@@ -45,7 +47,7 @@ class BaseTranscriptParser(object):
     @classmethod
     def fix_source(cls, source):
         if isinstance(source, string_types):
-            source = StringIO(text_(source))
+            source = cStringIO(text_(source))
         return source
 _BaseTranscriptParser = BaseTranscriptParser
 

@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 import six
 import math
@@ -19,6 +18,8 @@ from zope import component
 from nti.contentfragments.interfaces import IPlainTextContentFragment
 
 from nti.contentprocessing.content_utils import tokenize_content
+
+logger = __import__('logging').getLogger(__name__)
 
 
 def sanitize_content(text, table=None, tokens=False, lang='en'):
@@ -91,8 +92,6 @@ def videotimestamp_to_datetime(qstring):
                       minute=minute, second=second,
                       microsecond=microsecond)
     return result
-
-
 mediatimestamp_to_datetime = videotimestamp_to_datetime
 
 

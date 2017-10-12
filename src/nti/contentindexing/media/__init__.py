@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 from zope import interface
 
@@ -21,6 +20,8 @@ from nti.contentindexing.media.interfaces import IVideoTranscriptEntry
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from nti.schema.schema import SchemaConfigured
+
+logger = __import__('logging').getLogger(__name__)
 
 
 @interface.implementer(IMediaTranscriptEntry)
@@ -54,7 +55,7 @@ class MediaTranscript(SchemaConfigured):
 
     @property
     def text(self):
-        return '\n'.join(x.transcript for x in self.entries)
+        return u'\n'.join(x.transcript for x in self.entries)
 
     def append(self, value):
         return self.entries.append(value)

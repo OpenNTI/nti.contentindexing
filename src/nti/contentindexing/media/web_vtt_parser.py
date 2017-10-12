@@ -8,16 +8,19 @@ https://github.com/humphd/node-webvtt/blob/master/lib/parser.js
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 import re
 import time
 
-from six import StringIO
 from six import string_types
+
+from six.moves import cStringIO
+
+logger = __import__('logging').getLogger(__name__)
+
 
 # ----------------------------------
 
@@ -54,13 +57,14 @@ class Cue(object):
                                  self.end_timestamp,
                                  self.text)
 
+
 # ----------------------------------
 
 
 class _WebVTTCueTimingsAndSettingsParser(object):
 
-    SPACE = r'[\u0020\t\f]'
-    NOSPACE = r'[^\u0020\t\f]'
+    SPACE = u'[\u0020\t\f]'
+    NOSPACE = u'[^\u0020\t\f]'
 
     def __init__(self, line, error_handler):
         self.pos = 0
@@ -302,6 +306,7 @@ class _WebVTTCueTimingsAndSettingsParser(object):
             return None
         return ts
 
+
 # ----------------------------------
 
 
@@ -394,8 +399,8 @@ class _WebVTTCueTextParser(object):
         return result
 
     def next_token(self):
-        buff = ""
-        result = ""
+        buff = u""
+        result = u""
         classes = []
         state = "data"
         while self.pos <= len(self.line) or self.pos == 0:
@@ -536,7 +541,7 @@ class WebVTTParser(object):
 
         already_collected = False
         if isinstance(source, string_types):
-            source = StringIO(source)
+            source = cStringIO(source)
 
         lines = []
         for line in source:
@@ -585,7 +590,7 @@ class WebVTTParser(object):
             if not already_collected and linepos >= len(lines):
                 break
 
-            cue = Cue(id_="", start_time=0, end_time=0, pause_on_exit=False,
+            cue = Cue(id_=u"", start_time=0, end_time=0, pause_on_exit=False,
                       direction=u"horizontal", snap_to_lines=True,
                       line_position=u"auto", text_position=50, size=100,
                       alignment=u"middle", text=u"", tree=None)
