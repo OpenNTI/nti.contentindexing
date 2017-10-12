@@ -9,10 +9,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 
 import re
-
+from six import StringIO
 from six import string_types
 
-from six.moves import cStringIO
 
 from nti.contentindexing.media import MediaTranscript
 from nti.contentindexing.media import MediaTranscriptEntry
@@ -47,7 +46,7 @@ class BaseTranscriptParser(object):
     @classmethod
     def fix_source(cls, source):
         if isinstance(source, string_types):
-            source = cStringIO(text_(source))
+            source = StringIO(text_(source))
         return source
 _BaseTranscriptParser = BaseTranscriptParser
 
