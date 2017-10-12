@@ -21,7 +21,7 @@ import codecs
 
 from zope import component
 
-from nti.base._compat import text_
+from nti.contentprocessing._compat import text_
 
 from nti.contentindexing.media.interfaces import IVideoTranscriptParser
 
