@@ -11,6 +11,7 @@ from __future__ import absolute_import
 import six
 import math
 import time
+from numbers import Number
 from datetime import datetime
 
 from zope import component
@@ -61,7 +62,7 @@ def get_datetime(x=None):
 
 def date_to_videotimestamp(dt):
     dt = float(dt) if isinstance(dt, six.string_types) else dt
-    dt = get_datetime(dt) if isinstance(dt, (float, long)) else dt
+    dt = get_datetime(dt) if isinstance(dt, Number) else dt
     if isinstance(dt, datetime):
         milli = math.floor(dt.microsecond / 1000.0)
         result = u"%02d:%02d:%02d.%03d" % (dt.hour,
