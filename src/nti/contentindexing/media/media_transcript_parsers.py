@@ -145,6 +145,12 @@ class WebVttTranscriptParser(BaseTranscriptParser):
     transcript_cls = MediaTranscript
 
     @classmethod
+    def is_valid(cls, cue):
+        return not cue.has_errors \
+               and cue.end_timestamp is not None \
+               and cue.start_timestamp is not None 
+
+    @classmethod
     def parse(cls, source):
         entries = []
         source = cls.fix_source(source)
@@ -152,12 +158,11 @@ class WebVttTranscriptParser(BaseTranscriptParser):
         parsed = parser.parse(source)
         cues = parsed.get('cues') or ()
         for eid, cue in enumerate(cues):
-            if cue.has_errors or not cue.end_timestamp or not cue.start_timestamp:
-                continue
-            e = cls.entry_cls(id=text_(str(eid + 1)),
-                              transcript=text_(cue.text),
-                              start_timestamp=cue.start_timestamp,
-                              end_timestamp=cue.end_timestamp)
-            entries.append(e)
+            if cls.is_valid(cue):
+                e = cls.entry_cls(id=text_(str(eid + 1)),
+                                  transcript=text_(cue.text),
+                                  start_timestamp=cue.start_timestamp,
+                                  end_timestamp=cue.end_timestamp)
+                entries.append(e)
         return cls.transcript_cls(entries=entries)
 _WebVttTranscriptParser = WebVttTranscriptParser

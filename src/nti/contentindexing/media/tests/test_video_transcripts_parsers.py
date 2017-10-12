@@ -21,7 +21,11 @@ import codecs
 
 from zope import component
 
+from nti.base._compat import text_
+
 from nti.contentindexing.media.interfaces import IVideoTranscriptParser
+
+from nti.contentindexing.media.media_transcript_parsers import YoutubeTranscriptParser
 
 from nti.contentindexing.tests import ContentIndexingLayerTest
 
@@ -70,7 +74,8 @@ class TestVideoTranscriptParser(ContentIndexingLayerTest):
                             'transcripts/sample_web.vtt')
         parser = component.getUtility(IVideoTranscriptParser, name="vtt")
         with open(path, "r") as source:
-            transcript = parser.parse(source)
+            transcript = text_(source.read())
+        transcript = parser.parse(transcript)
         assert_that(transcript, is_not(none()))
         assert_that(transcript, has_length(6))
         for e in transcript:
@@ -105,3 +110,8 @@ class TestVideoTranscriptParser(ContentIndexingLayerTest):
             transcript = parser.parse(source)
         assert_that(transcript, is_not(none()))
         assert_that(transcript, has_length(434))
+
+    def test_coverage(self):
+        assert_that(YoutubeTranscriptParser.get_timestamp_range(''),
+                    is_(none()))
+        
