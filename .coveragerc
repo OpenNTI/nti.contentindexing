@@ -1,7 +1,6 @@
 [run]
 source = nti.contentindexing
 
-
 [report]
 exclude_lines =
     pragma: no cover
