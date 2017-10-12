@@ -99,7 +99,7 @@ class WebVTTCueTimingsAndSettingsParser(object):
         while self.pos < len(self.line) and re.match(pattern, self.line[self.pos]):
             s.append(self.line[self.pos])
             self.pos += 1
-        return ''.join(s)
+        return u''.join(s)
 
     def timestamp(self):
         """
@@ -320,6 +320,7 @@ class WebVTTCueTimingsAndSettingsParser(object):
     def parse_timestamp(self):
         ts = self.timestamp()
         if self.pos >= len(self.line):
+            print('here')
             self.err("Timestamp must not have trailing characters.")
             return None
         return ts
