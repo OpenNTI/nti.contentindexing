@@ -16,9 +16,9 @@ import re
 import time
 import functools
 
+from six import StringIO
 from six import string_types
 
-from six.moves import cStringIO
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -75,13 +75,17 @@ class Cue(object):
 # ----------------------------------
 
 
-class _WebVTTCueTimingsAndSettingsParser(object):
+def default_error_handler(message, pos):
+    logger.error('Error at %s, %s', pos, message)
+
+
+class WebVTTCueTimingsAndSettingsParser(object):
 
     SPACE = u'[\u0020\t\f]'
     NOSPACE = u'[^\u0020\t\f]'
 
-    def __init__(self, line, error_handler):
-        self.pos = 0
+    def __init__(self, line, error_handler=default_error_handler, pos=0):
+        self.pos = pos
         self.line = line
         self.space_before_setting = True
         self.err = lambda message: error_handler(message, self.pos + 1)
@@ -319,6 +323,7 @@ class _WebVTTCueTimingsAndSettingsParser(object):
             self.err("Timestamp must not have trailing characters.")
             return None
         return ts
+_WebVTTCueTimingsAndSettingsParser = WebVTTCueTimingsAndSettingsParser
 
 
 # ----------------------------------
@@ -332,10 +337,10 @@ class _Result(object):
     def __getattr__(self, name):
         return self.__dict__.get(name, None)
 
+            
+class WebVTTCueTextParser(object):
 
-class _WebVTTCueTextParser(object):
-
-    def __init__(self, line, error_handler):
+    def __init__(self, line, error_handler=default_error_handler):
         self.pos = 0
         self.line = line
         self.err = lambda message: error_handler(message, self.pos + 1)
@@ -391,8 +396,7 @@ class _WebVTTCueTextParser(object):
                 else:
                     self.err("Incorrect end tag.")
             elif token[0] == "timestamp":
-                timings = _WebVTTCueTimingsAndSettingsParser(
-                    token[1], self.err)
+                timings = WebVTTCueTimingsAndSettingsParser(token[1], self.err)
                 timestamp = timings.parse_timestamp()
                 if timestamp != None:
                     if timestamp <= cue_start or timestamp >= cue_end:
@@ -536,6 +540,7 @@ class _WebVTTCueTextParser(object):
             # 8
             self.pos += 1
 
+
 # ----------------------------------
 
 
@@ -554,7 +559,7 @@ class WebVTTParser(object):
 
         already_collected = False
         if isinstance(source, string_types):
-            source = cStringIO(source)
+            source = StringIO(source)
 
         lines = []
         for line in source:
@@ -618,7 +623,7 @@ class WebVTTParser(object):
             # TIMINGS
             previous_cue_start = 0
             already_collected = False
-            timings = _WebVTTCueTimingsAndSettingsParser(lines[linepos], err)
+            timings = WebVTTCueTimingsAndSettingsParser(lines[linepos], err)
             if cues:
                 previous_cue_start = cues[-1].start_time
 
@@ -649,7 +654,7 @@ class WebVTTParser(object):
                 linepos += 1
 
             # CUE TEXT PROCESSING
-            cue_text_parser = _WebVTTCueTextParser(cue.text, err)
+            cue_text_parser = WebVTTCueTextParser(cue.text, err)
             cue.tree = cue_text_parser.parse(cue.start_time, cue.end_time)
             cues.append(cue)
             cue.has_errors = len(errors) > cnt
@@ -661,3 +666,4 @@ class WebVTTParser(object):
                   'time': time.time() - start_time}
         result.update(meta)
         return result
+_WebVTTParser = WebVTTParser
