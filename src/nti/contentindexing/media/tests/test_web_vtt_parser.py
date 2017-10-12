@@ -30,6 +30,32 @@ class TestWebVttParser(ContentIndexingLayerTest):
         assert_that(b.__gt__(a), is_(True))
 
     def test_cue_timings_parser(self):
-        p = WebVTTCueTimingsAndSettingsParser('')
-        p.pos = 1
+        p = WebVTTCueTimingsAndSettingsParser('', pos=1)
+        assert_that(p.timestamp(), is_(none()))
+        
+        p = WebVTTCueTimingsAndSettingsParser('ichigo')
+        assert_that(p.timestamp(), is_(none()))
+        
+        p = WebVTTCueTimingsAndSettingsParser('130,')
+        assert_that(p.timestamp(), is_(none()))
+        
+        p = WebVTTCueTimingsAndSettingsParser('00:0:')
+        assert_that(p.timestamp(), is_(none()))
+        
+        p = WebVTTCueTimingsAndSettingsParser('120:00,')
+        assert_that(p.timestamp(), is_(none()))
+        
+        p = WebVTTCueTimingsAndSettingsParser('120:00:0')
+        assert_that(p.timestamp(), is_(none()))
+        
+        p = WebVTTCueTimingsAndSettingsParser('120:00:00')
+        assert_that(p.timestamp(), is_(none()))
+        
+        p = WebVTTCueTimingsAndSettingsParser('20:00:00.89')
+        assert_that(p.timestamp(), is_(none()))
+        
+        p = WebVTTCueTimingsAndSettingsParser('20:64:00.899')
+        assert_that(p.timestamp(), is_(none()))
+        
+        p = WebVTTCueTimingsAndSettingsParser('00:00:89.899')
         assert_that(p.timestamp(), is_(none()))
