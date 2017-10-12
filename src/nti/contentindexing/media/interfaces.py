@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 from zope import interface
 
@@ -16,7 +15,7 @@ from zope.interface.common.sequence import IMinimalSequence
 from nti.schema.field import Object
 from nti.schema.field import ValidText
 from nti.schema.field import ListOrTuple
-from nti.schema.field import ValidTextLine
+from nti.schema.field import DecodingValidTextLine as ValidTextLine
 
 
 class IMediaTranscriptEntry(interface.Interface):
@@ -24,9 +23,13 @@ class IMediaTranscriptEntry(interface.Interface):
     Marker interface for video transcript entry
     """
     id = ValidTextLine(title=u'Transcript entry id', required=False)
+
     transcript = ValidText(title=u'Transcript text')
+
     end_timestamp = ValidTextLine(title=u'End time stamp')
+
     start_timestamp = ValidTextLine(title=u'Start time stamp')
+
     language = ValidTextLine(title=u'Transcript language', required=False,
                              default=u'en')
 
