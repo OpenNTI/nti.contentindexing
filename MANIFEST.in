@@ -15,3 +15,6 @@ recursive-include docs *.py
 recursive-include docs *.rst
 recursive-include docs Makefile
 recursive-include src *.zcml
+recursive-include src *.sbv
+recursive-include src *.srt
+recursive-include src *.vtt
