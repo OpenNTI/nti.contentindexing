@@ -320,7 +320,6 @@ class WebVTTCueTimingsAndSettingsParser(object):
     def parse_timestamp(self):
         ts = self.timestamp()
         if self.pos >= len(self.line):
-            print('here')
             self.err("Timestamp must not have trailing characters.")
             return None
         return ts
