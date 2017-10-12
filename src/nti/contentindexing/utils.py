@@ -84,10 +84,8 @@ def videotimestamp_to_datetime(qstring):
         minute = int(qstring[3:5])
     if len(qstring) >= 8:
         second = int(qstring[6:8])
-    if len(qstring) == 12:
+    if len(qstring) >= 12:
         microsecond = int(qstring[9:12]) * 1000
-    if len(qstring) == 13:
-        microsecond = int(qstring[9:13])
 
     result = datetime(year=year, month=month, day=day, hour=hour,
                       minute=minute, second=second,
