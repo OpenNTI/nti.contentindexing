@@ -210,7 +210,7 @@ class WebVTTCueTimingsAndSettingsParser(object):
                     continue
                 cue.direction = value
             elif setting == "line":  # line position
-                if not re.match(r'\d', value):
+                if not re.match(r'-?\d', value):
                     self.err("Line position takes a number or percentage.")
                     continue
 
