@@ -1,0 +1,1 @@
+-e svn+https://repos.nextthought.com/svn/nti-svn/nti.contentprocessing/trunk#egg=nti.contentprocessing
