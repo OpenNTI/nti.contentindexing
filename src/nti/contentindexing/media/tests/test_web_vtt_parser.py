@@ -15,15 +15,26 @@ from hamcrest import assert_that
 from hamcrest import has_property
 
 from nti.contentindexing.media.web_vtt_parser import Cue
+from nti.contentindexing.media.web_vtt_parser import WebVTTCueTextParser
 from nti.contentindexing.media.web_vtt_parser import WebVTTCueTimingsAndSettingsParser
 
 from nti.contentindexing.tests import ContentIndexingLayerTest
 
 
-class LocalParser(WebVTTCueTimingsAndSettingsParser):
+class LocalCueTextParser(WebVTTCueTextParser):
 
     def __init__(self, *args, **kwargs):
-        super(LocalParser, self).__init__(*args, **kwargs)
+        super(LocalCueTextParser, self).__init__(*args, **kwargs)
+        self.err = self._local_error
+
+    def _local_error(self, *unused_args):
+        self.has_error = True
+
+
+class LocalCueTimingsParser(WebVTTCueTimingsAndSettingsParser):
+
+    def __init__(self, *args, **kwargs):
+        super(LocalCueTimingsParser, self).__init__(*args, **kwargs)
         self.err = self._local_error
 
     def _local_error(self, *unused_args):
@@ -44,44 +55,44 @@ class TestWebVttParser(ContentIndexingLayerTest):
         p = WebVTTCueTimingsAndSettingsParser('', pos=1)
         assert_that(p.timestamp(), is_(none()))
 
-        p = LocalParser('ichigo')
+        p = LocalCueTimingsParser('ichigo')
         assert_that(p.timestamp(), is_(none()))
 
-        p = LocalParser('130,')
+        p = LocalCueTimingsParser('130,')
         assert_that(p.timestamp(), is_(none()))
 
-        p = LocalParser('00:0:')
+        p = LocalCueTimingsParser('00:0:')
         assert_that(p.timestamp(), is_(none()))
 
-        p = LocalParser('120:00,')
+        p = LocalCueTimingsParser('120:00,')
         assert_that(p.timestamp(), is_(none()))
 
-        p = LocalParser('120:00:0')
+        p = LocalCueTimingsParser('120:00:0')
         assert_that(p.timestamp(), is_(none()))
 
-        p = LocalParser('120:00:00')
+        p = LocalCueTimingsParser('120:00:00')
         assert_that(p.timestamp(), is_(none()))
 
-        p = LocalParser('20:00:00.89')
+        p = LocalCueTimingsParser('20:00:00.89')
         assert_that(p.timestamp(), is_(none()))
 
-        p = LocalParser('20:64:00.899')
+        p = LocalCueTimingsParser('20:64:00.899')
         assert_that(p.timestamp(), is_(none()))
 
-        p = LocalParser('00:00:89.899')
+        p = LocalCueTimingsParser('00:00:89.899')
         assert_that(p.timestamp(), is_(none()))
 
-        p = LocalParser('0:00:00.899 --> 1:00:02.691')
+        p = LocalCueTimingsParser('0:00:00.899')
         assert_that(p.parse_timestamp(), is_not(none()))
 
-        p = LocalParser('0:00:00.899')
+        p = LocalCueTimingsParser('1:00:02.691***')
         assert_that(p.parse_timestamp(), is_(none()))
 
     def test_cue_settings(self):
 
         def parse_settings(value, check=True):
             cue = Cue()
-            p = LocalParser('')
+            p = LocalCueTimingsParser('')
             p.parse_settings(value, cue)
             if check:
                 assert_that(p, has_property('has_error', is_(True)))
@@ -105,41 +116,132 @@ class TestWebVttParser(ContentIndexingLayerTest):
 
         parse_settings('invalid:300%')
 
-    def test_cue_parse(self):
-        p = LocalParser('')
+    def test_cue_timings_parse(self):
+        p = LocalCueTimingsParser('')
         assert_that(p.parse(Cue(), 0), is_(none()))
 
-        p = LocalParser('0:00:00.899 --> 1:00:02.691')
+        p = LocalCueTimingsParser('0:00:00.899 --> 1:00:02.691')
         p.parse(Cue(), 1)
         assert_that(p, has_property('has_error', is_(True)))
 
-        p = LocalParser('0:00:00.899-1:00:02.691')
+        p = LocalCueTimingsParser('0:00:00.899-1:00:02.691')
         p.parse(Cue(), 0)
         assert_that(p, has_property('has_error', is_(True)))
 
-        p = LocalParser('0:00:00.899*1:00:02.691')
+        p = LocalCueTimingsParser('0:00:00.899*1:00:02.691')
         assert_that(p.parse(Cue(), 0), is_(none()))
         assert_that(p, has_property('has_error', is_(True)))
 
-        p = LocalParser('0:00:00.899 -* 1:00:02.691')
+        p = LocalCueTimingsParser('0:00:00.899 -* 1:00:02.691')
         assert_that(p.parse(Cue(), 0), is_(none()))
         assert_that(p, has_property('has_error', is_(True)))
 
-        p = LocalParser('0:00:00.899 --* 1:00:02.691')
+        p = LocalCueTimingsParser('0:00:00.899 --* 1:00:02.691')
         assert_that(p.parse(Cue(), 0), is_(none()))
         assert_that(p, has_property('has_error', is_(True)))
 
-        p = LocalParser('0:00:00.899-->1:00:02.691')
+        p = LocalCueTimingsParser('0:00:00.899-->1:00:02.691')
         p.parse(Cue(), 0)
         assert_that(p, has_property('has_error', is_(True)))
 
-        p = LocalParser('0:00:00.899 --> ichigo')
+        p = LocalCueTimingsParser('0:00:00.899 --> ichigo')
         assert_that(p.parse(Cue(), 0), is_(none()))
         assert_that(p, has_property('has_error', is_(True)))
 
-        p = LocalParser('0:00:00.899 --> 0:00:00.899')
+        p = LocalCueTimingsParser('0:00:00.899 --> 0:00:00.899')
         p.parse(Cue(), 0)
         assert_that(p, has_property('has_error', is_(True)))
 
-        p = LocalParser('0:00:00.899 --> 0:00:00.899-line:15%')
+        p = LocalCueTimingsParser('0:00:00.899 --> 0:00:00.899-line:15%')
         assert_that(p.parse(Cue(), 0), is_(True))
+
+    def test_cue_text_parse(self):
+        # invalid tag
+        p = LocalCueTextParser("<h>location</h>")
+        p.parse(0.899, 2.691)
+        assert_that(p, has_property('has_error', is_(True)))
+        
+        p = LocalCueTextParser("<v>a<v>b</v></v>")
+        p.parse(0.899, 2.691)
+        assert_that(p, has_property('has_error', is_(True)))
+        
+        p = LocalCueTextParser("<b foo>x</b>")
+        p.parse(0.899, 2.691)
+        assert_that(p, has_property('has_error', is_(True)))
+         
+        p = LocalCueTextParser("<b>location</b> of the book.")
+        p.parse(0.899, 2.691)
+
+        s = "<ruby>WWW<rt>World Wide Web</rt>oui<rt>yes</rt></ruby>"
+        p = LocalCueTextParser(s)
+        p.parse(0.899, 2.691)
+
+        # ivalid rubby content
+        p = LocalCueTextParser("<ruby>x<rt>y</ruby></rt>")
+        p.parse(0.899, 2.691)
+        assert_that(p, has_property('has_error', is_(True)))
+        
+        p = LocalCueTextParser("Like a <00:19.000> big-a")
+        p.parse(0.899, 2.691)
+        assert_that(p, has_property('has_error', is_(True)))
+        
+        p = LocalCueTextParser("Like a <00:19.000> big-a <00:18.000> ")
+        p.parse(0.899, 2.691)
+        assert_that(p, has_property('has_error', is_(True)))
+        
+        p = LocalCueTextParser("<b>Like")
+        p.parse(0.899, 2.691)
+        assert_that(p, has_property('has_error', is_(True)))
+        
+        p = LocalCueTextParser("&lt;Like")
+        p.parse(0.899, 2.691)
+        
+        p = LocalCueTextParser("&&Like")
+        p.parse(0.899, 2.691)
+        
+        p = LocalCueTextParser("&gt; &amp; here")
+        p.parse(0.899, 2.691)
+        
+        p = LocalCueTextParser("&pt; here")
+        p.parse(0.899, 2.691)
+        assert_that(p, has_property('has_error', is_(True)))
+        
+        p = LocalCueTextParser("&<")
+        p.parse(0.899, 2.691)
+        assert_that(p, has_property('has_error', is_(True)))
+        
+        # coverage... start tag followed by space
+        p = LocalCueTextParser("< v/>")
+        p.parse(0.899, 2.691)
+        
+        # coverage... start tag followed by class
+        p = LocalCueTextParser("<.class />")
+        p.parse(0.899, 2.691)
+        
+        # coverage... empty open-close tag
+        p = LocalCueTextParser("<>")
+        p.parse(0.899, 2.691)
+        
+        # coverage... empty open-close tag
+        p = LocalCueTextParser("</>")
+        p.parse(0.899, 2.691)
+        
+        # class
+        p = LocalCueTextParser("<c.bleach>aizen</c>")
+        p.parse(0.899, 2.691)
+        
+        # class
+        p = LocalCueTextParser("<c.\tbleach>aizen</c>")
+        p.parse(0.899, 2.691)
+        
+        # class
+        p = LocalCueTextParser("<c.\nbleach>aizen</c>")
+        p.parse(0.899, 2.691)
+        
+        # class
+        p = LocalCueTextParser("<c..bleach>aizen</c>")
+        p.parse(0.899, 2.691)
+        
+        # class
+        p = LocalCueTextParser("<v\nbleach>aizen</v>")
+        p.parse(0.899, 2.691)

@@ -518,7 +518,8 @@ class WebVTTCueTextParser(object):
                         self.pos += 1
 
                     ts = filter(
-                        lambda x: True if x else False, re.split('[\u0020\t\f\r\n]+', buff))
+                        lambda x: True if x else False, re.split(u'[\u0020\t\f\r\n]+', buff)
+                    )
                     buff = " ".join(ts)
                     return ["start tag", result, classes, buff]
                 else:
@@ -537,8 +538,6 @@ class WebVTTCueTextParser(object):
                     return ["timestamp", result]
                 else:
                     result += c
-            else:
-                self.err("Never happens.")
             # 8
             self.pos += 1
 
