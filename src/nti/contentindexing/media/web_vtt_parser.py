@@ -319,7 +319,7 @@ class WebVTTCueTimingsAndSettingsParser(object):
 
     def parse_timestamp(self):
         ts = self.timestamp()
-        if self.pos >= len(self.line):
+        if ts and self.pos < len(self.line):
             self.err("Timestamp must not have trailing characters.")
             return None
         return ts
@@ -348,7 +348,6 @@ class WebVTTCueTextParser(object):
     def parse(self, cue_start, cue_end):
         timestamps = []
         result = current = _Result(children=[])
-
         def attach(token, current):
             current.children.append(_Result(type=u"object", name=token[1],
                                             classes=token[2],
@@ -399,15 +398,18 @@ class WebVTTCueTextParser(object):
                 timings = WebVTTCueTimingsAndSettingsParser(token[1], self.err)
                 timestamp = timings.parse_timestamp()
                 if timestamp != None:
-                    if timestamp <= cue_start or timestamp >= cue_end:
+                    if timestamp[0] <= cue_start or timestamp[0] >= cue_end:
                         self.err(
-                            "Timestamp tag must be between start timestamp and end timestamp.")
-                    if timestamps.length > 0 and timestamps[-1] >= timestamp:
+                            "Timestamp tag must be between start timestamp and end timestamp."
+                        )
+                    if timestamps and timestamps[-1] >= timestamp:
                         self.err(
-                            "Timestamp tag must be greater than any previous timestamp tag.")
+                            "Timestamp tag must be greater than any previous timestamp tag."
+                        )
 
                     current.children.append(
-                        _Result(type="timestamp", value=timestamp, parent=current))
+                        _Result(type="timestamp", value=timestamp, parent=current)
+                    )
                     timestamps.append(timestamp)
 
         while current.parent:
