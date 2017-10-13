@@ -146,8 +146,8 @@ class WebVttTranscriptParser(BaseTranscriptParser):
     @classmethod
     def is_valid(cls, cue):
         return not cue.has_errors \
-               and cue.end_timestamp is not None \
-               and cue.start_timestamp is not None 
+           and cue.end_timestamp is not None \
+           and cue.start_timestamp is not None
 
     @classmethod
     def parse(cls, source):

@@ -337,7 +337,7 @@ class _Result(object):
     def __getattr__(self, name):
         return self.__dict__.get(name, None)
 
-            
+
 class WebVTTCueTextParser(object):
 
     def __init__(self, line, error_handler=default_error_handler):
@@ -348,6 +348,7 @@ class WebVTTCueTextParser(object):
     def parse(self, cue_start, cue_end):
         timestamps = []
         result = current = _Result(children=[])
+
         def attach(token, current):
             current.children.append(_Result(type=u"object", name=token[1],
                                             classes=token[2],
@@ -408,7 +409,9 @@ class WebVTTCueTextParser(object):
                         )
 
                     current.children.append(
-                        _Result(type="timestamp", value=timestamp, parent=current)
+                        _Result(type="timestamp",
+                                value=timestamp, 
+                                parent=current)
                     )
                     timestamps.append(timestamp)
 
@@ -555,7 +558,7 @@ class WebVTTParser(object):
 
         def err(message, col=None):
             errors.append({'message': message,
-                           'line': linepos + 1, 
+                           'line': linepos + 1,
                            'col': col})
 
         already_collected = False
@@ -570,9 +573,9 @@ class WebVTTParser(object):
 
         # SIGNATURE
         if     len(lines[linepos]) < 6 or lines[linepos].find("WEBVTT") != 0 \
-            or  (len(lines[linepos]) > 6 
-                 and lines[linepos][6] != " " 
-                 and lines[linepos][6] != "\t"):
+            or (    len(lines[linepos]) > 6
+                and lines[linepos][6] != " "
+                and lines[linepos][6] != "\t"):
             err("No valid signature. (File needs to start with \"WEBVTT\".)",
                 linepos)
 

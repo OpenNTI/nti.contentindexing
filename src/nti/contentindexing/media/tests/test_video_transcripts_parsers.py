@@ -45,16 +45,16 @@ class TestVideoTranscriptParser(ContentIndexingLayerTest):
         assert_that(transcript, has_length(167))
         assert_that(transcript,
                     has_property('text', has_length(greater_than(6700))))
-        
+
         for e in transcript:
             assert_that(e, is_not(none()))
             assert_that(e.transcript, is_not(none()))
             assert_that(str(e), is_not(none()))
             assert_that(repr(e), is_not(none()))
-        
+
         # add new entry
         transcript.append(e)
-        assert_that(transcript[len(transcript) -1],
+        assert_that(transcript[len(transcript) - 1],
                     is_(e))
 
     def test_sbv_parser(self):
@@ -114,4 +114,3 @@ class TestVideoTranscriptParser(ContentIndexingLayerTest):
     def test_coverage(self):
         assert_that(YoutubeTranscriptParser.get_timestamp_range(''),
                     is_(none()))
-        

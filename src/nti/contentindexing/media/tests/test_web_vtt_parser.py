@@ -11,10 +11,14 @@ from __future__ import absolute_import
 from hamcrest import is_
 from hamcrest import none
 from hamcrest import is_not
+from hamcrest import has_entry
 from hamcrest import assert_that
 from hamcrest import has_property
 
+from nti.testing.matchers import is_empty
+
 from nti.contentindexing.media.web_vtt_parser import Cue
+from nti.contentindexing.media.web_vtt_parser import WebVTTParser
 from nti.contentindexing.media.web_vtt_parser import WebVTTCueTextParser
 from nti.contentindexing.media.web_vtt_parser import WebVTTCueTimingsAndSettingsParser
 
@@ -156,92 +160,108 @@ class TestWebVttParser(ContentIndexingLayerTest):
         assert_that(p.parse(Cue(), 0), is_(True))
 
     def test_cue_text_parse(self):
+        data = (0.899, 2.691)
         # invalid tag
         p = LocalCueTextParser("<h>location</h>")
-        p.parse(0.899, 2.691)
+        p.parse(*data)
         assert_that(p, has_property('has_error', is_(True)))
-        
+
         p = LocalCueTextParser("<v>a<v>b</v></v>")
-        p.parse(0.899, 2.691)
+        p.parse(*data)
         assert_that(p, has_property('has_error', is_(True)))
-        
+
         p = LocalCueTextParser("<b foo>x</b>")
-        p.parse(0.899, 2.691)
+        p.parse(*data)
         assert_that(p, has_property('has_error', is_(True)))
-         
+
         p = LocalCueTextParser("<b>location</b> of the book.")
-        p.parse(0.899, 2.691)
+        p.parse(*data)
 
         s = "<ruby>WWW<rt>World Wide Web</rt>oui<rt>yes</rt></ruby>"
         p = LocalCueTextParser(s)
-        p.parse(0.899, 2.691)
+        p.parse(*data)
 
         # ivalid rubby content
         p = LocalCueTextParser("<ruby>x<rt>y</ruby></rt>")
-        p.parse(0.899, 2.691)
+        p.parse(*data)
         assert_that(p, has_property('has_error', is_(True)))
-        
+
         p = LocalCueTextParser("Like a <00:19.000> big-a")
-        p.parse(0.899, 2.691)
+        p.parse(*data)
         assert_that(p, has_property('has_error', is_(True)))
-        
+
         p = LocalCueTextParser("Like a <00:19.000> big-a <00:18.000> ")
-        p.parse(0.899, 2.691)
+        p.parse(*data)
         assert_that(p, has_property('has_error', is_(True)))
-        
+
         p = LocalCueTextParser("<b>Like")
-        p.parse(0.899, 2.691)
+        p.parse(*data)
         assert_that(p, has_property('has_error', is_(True)))
-        
+
         p = LocalCueTextParser("&lt;Like")
-        p.parse(0.899, 2.691)
-        
+        p.parse(*data)
+
         p = LocalCueTextParser("&&Like")
-        p.parse(0.899, 2.691)
-        
+        p.parse(*data)
+
         p = LocalCueTextParser("&gt; &amp; here")
-        p.parse(0.899, 2.691)
-        
+        p.parse(*data)
+
         p = LocalCueTextParser("&pt; here")
-        p.parse(0.899, 2.691)
+        p.parse(*data)
         assert_that(p, has_property('has_error', is_(True)))
-        
+
         p = LocalCueTextParser("&<")
-        p.parse(0.899, 2.691)
+        p.parse(*data)
         assert_that(p, has_property('has_error', is_(True)))
-        
+
         # coverage... start tag followed by space
         p = LocalCueTextParser("< v/>")
-        p.parse(0.899, 2.691)
-        
+        p.parse(*data)
+
         # coverage... start tag followed by class
         p = LocalCueTextParser("<.class />")
-        p.parse(0.899, 2.691)
-        
+        p.parse(*data)
+
         # coverage... empty open-close tag
         p = LocalCueTextParser("<>")
-        p.parse(0.899, 2.691)
-        
+        p.parse(*data)
+
         # coverage... empty open-close tag
         p = LocalCueTextParser("</>")
-        p.parse(0.899, 2.691)
-        
+        p.parse(*data)
+
         # class
         p = LocalCueTextParser("<c.bleach>aizen</c>")
-        p.parse(0.899, 2.691)
-        
+        p.parse(*data)
+
         # class
         p = LocalCueTextParser("<c.\tbleach>aizen</c>")
-        p.parse(0.899, 2.691)
-        
+        p.parse(*data)
+
         # class
         p = LocalCueTextParser("<c.\nbleach>aizen</c>")
-        p.parse(0.899, 2.691)
-        
+        p.parse(*data)
+
         # class
         p = LocalCueTextParser("<c..bleach>aizen</c>")
-        p.parse(0.899, 2.691)
-        
+        p.parse(*data)
+
         # class
         p = LocalCueTextParser("<v\nbleach>aizen</v>")
-        p.parse(0.899, 2.691)
+        p.parse(*data)
+
+    def test_web_vtt_parser(self):
+        p = WebVTTParser()
+        result = p.parse('ichigo')
+        assert_that(result, has_entry('errors', is_not(is_empty())))
+
+        result = p.parse('WEBVTT\aizen\n-->')
+        assert_that(result, has_entry('errors', is_not(is_empty())))
+
+        result = p.parse('WEBVTT\n\n1\n\t')
+        assert_that(result, has_entry('errors', is_not(is_empty())))
+
+        s = 'WEBVTT\n\n1\n00:00:00.899 --> 00:00:02.691\n00:00:00.899 --> 00:00:02.691\n-->\nhere\n-->'
+        result = p.parse(s)
+        assert_that(result, has_entry('errors', is_not(is_empty())))

@@ -34,7 +34,7 @@ class TestUtils(unittest.TestCase):
 
     def test_sanitize_content(self):
         assert_that(sanitize_content(None), is_(none()))
-        assert_that(sanitize_content(u'<b>ichigo</b>'), 
+        assert_that(sanitize_content(u'<b>ichigo</b>'),
                     is_('ichigo'))
 
     def test_videotimestamp(self):
@@ -42,11 +42,11 @@ class TestUtils(unittest.TestCase):
         assert_that(date_to_videotimestamp(f), starts_with('15:11:08.4'))
         assert_that(date_to_videotimestamp(str(f)), starts_with('15:11:08.4'))
         assert_that(date_to_videotimestamp(None), is_(u''))
-        
+
         dt = videotimestamp_to_datetime('15:11:08.413')
         assert_that(dt, is_(datetime))
         assert_that(str(dt), contains_string('15:11:08.413'))
-        
+
     def test_video_date_to_millis(self):
         dt = videotimestamp_to_datetime('15:11:08.413')
         assert_that(video_date_to_millis(dt),
