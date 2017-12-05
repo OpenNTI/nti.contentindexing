@@ -19,9 +19,7 @@ import functools
 from six import StringIO
 from six import string_types
 
-
 logger = __import__('logging').getLogger(__name__)
-
 
 # ----------------------------------
 
@@ -113,7 +111,7 @@ class WebVTTCueTimingsAndSettingsParser(object):
             return None
 
         # 4
-        if not re.match('\d', self.line[self.pos]):
+        if not re.match(r'\d', self.line[self.pos]):
             self.err("Timestamp must start with a character in the range 0-9.")
             return None
 
@@ -388,7 +386,7 @@ class WebVTTCueTextParser(object):
                 else:
                     self.err("Incorrect start tag.")
             elif token[0] == "end tag":
-                # XXX check <ruby> content
+                # check <ruby> content
                 if token[1] == current.name:
                     current = current.parent
                 elif token[1] == "ruby" and current.name == "rt":
@@ -440,7 +438,7 @@ class WebVTTCueTextParser(object):
                     result += c
             elif state == "escape":
                 if c == "&":
-                    # XXX is this non-conforming?
+                    # Is this non-conforming?
                     result += buff
                     buff = c
                 elif c in "ampltg":
@@ -471,7 +469,7 @@ class WebVTTCueTextParser(object):
                     state = "start tag class"
                 elif c == "/":
                     state = "end tag"
-                elif c and re.match('\d', c):
+                elif c and re.match(r'\d', c):
                     result = c
                     state = "timestamp tag"
                 elif c == ">" or c == None:
@@ -519,10 +517,7 @@ class WebVTTCueTextParser(object):
                 if c == ">" or c == None:
                     if c == ">":
                         self.pos += 1
-
-                    ts = filter(
-                        lambda x: True if x else False, re.split(u'[\u0020\t\f\r\n]+', buff)
-                    )
+                    ts = [x for x in re.split(u'[\u0020\t\f\r\n]+', buff) if x]
                     buff = " ".join(ts)
                     return ["start tag", result, classes, buff]
                 else:

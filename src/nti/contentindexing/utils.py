@@ -45,7 +45,7 @@ def sanitize_content(text, table=None, tokens=False, lang='en'):
     # not to re-adapt multiple times
     raw = text
     text = component.getAdapter(text, IPlainTextContentFragment, name='text')
-    __traceback_info__ = raw, text, type(text)
+    __traceback_info__ = raw, text, type(text) # pylint: disable=unused-variable
     # translate and tokenize words
     text = text.translate(table) if table else text
     tokenized_words = tokenize_content(text, lang)

@@ -8,6 +8,8 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
+# pylint: disable=no-member
+        
 from zope import interface
 
 from nti.contentindexing.media.interfaces import IAudioTranscript
