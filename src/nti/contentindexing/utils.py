@@ -57,7 +57,7 @@ def sanitize_content(text, table=None, tokens=False, lang='en'):
 
 def get_datetime(x=None):
     x = x or time.time()
-    return datetime.fromtimestamp(float(x))
+    return datetime.utcfromtimestamp(float(x))
 
 
 def date_to_videotimestamp(dt):

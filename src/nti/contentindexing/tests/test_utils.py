@@ -39,13 +39,13 @@ class TestUtils(unittest.TestCase):
 
     def test_videotimestamp(self):
         f = 1321391468.413528
-        assert_that(date_to_videotimestamp(f), starts_with('15:11:08.4'))
-        assert_that(date_to_videotimestamp(str(f)), starts_with('15:11:08.4'))
+        assert_that(date_to_videotimestamp(f), starts_with('21:11:08.4'))
+        assert_that(date_to_videotimestamp(str(f)), starts_with('21:11:08.4'))
         assert_that(date_to_videotimestamp(None), is_(u''))
 
-        dt = videotimestamp_to_datetime('15:11:08.413')
+        dt = videotimestamp_to_datetime('21:11:08.413')
         assert_that(dt, is_(datetime))
-        assert_that(str(dt), contains_string('15:11:08.413'))
+        assert_that(str(dt), contains_string('21:11:08.413'))
 
     def test_video_date_to_millis(self):
         dt = videotimestamp_to_datetime('15:11:08.413')
